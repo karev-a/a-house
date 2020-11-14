@@ -1,4 +1,4 @@
 # a-house
-SDA final project
+SDA final project, work in progress.
 
-This is the final project for SDA course. Work in progress.
+Project is based on Django and MySQL. Requirements.txt attached.
