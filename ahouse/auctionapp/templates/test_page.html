@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Balance</th>
+            <th>Avatar</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{user.id}}</a></td>
+                <td>{{ user.username }}</a></td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.balance }}</td>
+                <td>{% if user.avatar %}<img src="{{ user.avatar.url }}" style="max-height:30px;">
+                {% endif %}</td>
+            </tr>
+        {% endfor %}
+</table>
+
+
+{% endblock %}
