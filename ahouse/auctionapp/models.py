@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .countries_list import CTRCHOICES
 
 # Create your models here.
 
@@ -29,11 +32,17 @@ class Profile(models.Model):
     address = models.CharField(max_length=255)
     town = models.CharField(max_length=45)
     post_code = models.CharField(max_length=25)
-    country = models.CharField(max_length=45)
+    country = models.CharField(max_length=45, choices=CTRCHOICES)
     balance = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     account_status = models.CharField(max_length=25, choices=ACCSTATUS)
     account_type = models.CharField(max_length=25, choices=ACCTYPES)
     avatar = models.ImageField(upload_to='images/avatars', blank=True)
+
+    @receiver(post_save, sender=User)
+    def update_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
 
 
 class Auction(models.Model):
