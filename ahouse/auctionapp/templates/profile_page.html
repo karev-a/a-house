@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+
+<p>Click <a href="{% url 'profile_details' user.id %}">here</a> to view your profile</p>
+
+
+
+
+<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
+
+
+{% endblock %}
