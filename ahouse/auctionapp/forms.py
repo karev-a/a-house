@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Auction
+from django.utils import timezone
 
 
 class SignupForm(UserCreationForm):
@@ -15,4 +17,21 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+
+class AuctionCreateForm(forms.ModelForm):
+    day_one = timezone.now() + timezone.timedelta(hours=24)
+    day_three = timezone.now() + timezone.timedelta(hours=72)
+    day_seven = timezone.now() + timezone.timedelta(hours=168)
+
+    AUCTION_LENGTH = (
+        (day_one, '1 day'),
+        (day_three, '3 days'),
+        (day_seven, '7 days')
+    )
+
+    auction_end = forms.DateTimeField(input_formats=['m.d.Y H:i'], widget=forms.Select(choices=AUCTION_LENGTH))
+
+    class Meta:
+        model = Auction
+        fields = ('title', 'description', 'image', 'category', 'min_bid', 'max_bid', 'promoted', 'auction_end')
 

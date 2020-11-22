@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .countries_list import CTRCHOICES
+from django.utils import timezone
 
 # Create your models here.
 
@@ -17,12 +18,6 @@ class Category(models.Model):
 
 
 class Profile(models.Model):
-    ACCSTATUS = (
-        ('ACT', 'Active'),
-        ('INA', 'Inactive'),
-        ('BLK', 'Blocked')
-    )
-
     ACCTYPES = (
         ('PRE', 'Premium'),
         ('Nor', 'Normal')
@@ -34,7 +29,6 @@ class Profile(models.Model):
     post_code = models.CharField(max_length=25)
     country = models.CharField(max_length=45, choices=CTRCHOICES)
     balance = models.DecimalField(max_digits=6, decimal_places=2, null=True)
-    account_status = models.CharField(max_length=25, choices=ACCSTATUS)
     account_type = models.CharField(max_length=25, choices=ACCTYPES)
     avatar = models.ImageField(upload_to='images/avatars', blank=True)
 
@@ -57,7 +51,7 @@ class Auction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, null=True, blank=True)
     min_bid = models.FloatField()
     max_bid = models.FloatField()
-    final_bid = models.FloatField()
+    final_bid = models.FloatField(null=True)
     promoted = models.CharField(max_length=25, choices=PROMOTION)
     auction_start = models.DateTimeField(auto_now_add=True, editable=False)
     auction_end = models.DateTimeField()

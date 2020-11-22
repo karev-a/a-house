@@ -2,7 +2,7 @@
 
 {% block content %}
 <p>Name: {{user.username}}</p>
-<p>Balance: {{user.balance}}</p>
+<p>Balance: {{profile.balance}}</p>
 
 
 <hr>
@@ -12,7 +12,7 @@
 
 
 
-<p>Click <a href="{% url 'test_page' %}">here</a> to go back</p>
+<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
 
 
 {% endblock %}

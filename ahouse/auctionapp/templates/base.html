@@ -14,7 +14,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #7e7e7e">
-  	<a class="navbar-brand" href="{% url 'test_page'%}">
+  	<a class="navbar-brand" href="{% url 'main_page' %}">
     	<img src="{% static 'auction/akbay3.jpg' %}" width="50%" height="50%">
 	</a>
 	<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
@@ -22,8 +22,9 @@
 	</button>
   	<div class="collapse navbar-collapse" id="navbarMenu">
   	    <ul class="navbar-nav d-flex align-items-end">
+			<li class="nav-item"><a href="{% url 'auction_create' %}" class="nav-link">Auction</a></li>
             <li class="nav-item"><a href="{% url 'signup_page' %}" class="nav-link">SignUp</a></li>
-			<li class="nav-item"><a href="{% url 'profile_page' %}" class="nav-link">Profile</a></li>
+			<li class="nav-item"><a href="{% url 'profile_details' user.id %}" class="nav-link">Profile</a></li>
             <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link">Admin</a></li>
 			{% if user.is_authenticated %}
 			<li class="nav-item"><a href="{% url 'logout' %}?next={{ request.path }}" class="nav-link">Logout</a></li>

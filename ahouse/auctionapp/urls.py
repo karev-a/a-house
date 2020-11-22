@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import TestPage, SignupPage, ProfileUpdateView, ProfileDetailsView
+from .views import MainPage, SignupPage, ProfileUpdateView, ProfileDetailsView, AuctionCreateView
 
 
 urlpatterns = [
-    path('', TestPage.as_view(), name='test_page'),
+    path('', MainPage.as_view(), name='main_page'),
     path('signup/', SignupPage.as_view(), name='signup_page'),
-    path('profile/', TestPage.as_view(), name='profile_page'),
+    path('profile/', MainPage.as_view(), name='profile_page'),
     path('profile/<int:pk>/', ProfileDetailsView.as_view(), name='profile_details'),
     path('profile/<int:pk>/update/', ProfileUpdateView.as_view(), name='profile_update'),
+    path('auction/', AuctionCreateView.as_view(), name='auction_create'),
 ]
