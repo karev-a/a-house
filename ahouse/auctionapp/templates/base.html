@@ -24,7 +24,7 @@
   	    <ul class="navbar-nav d-flex align-items-end">
 			<li class="nav-item"><a href="{% url 'auction_create' %}" class="nav-link">Auction</a></li>
             <li class="nav-item"><a href="{% url 'signup_page' %}" class="nav-link">SignUp</a></li>
-			<li class="nav-item"><a href="{% url 'profile_details' user.id %}" class="nav-link">Profile</a></li>
+			<li class="nav-item"><a href="{% url 'profile_page' %}" class="nav-link">Profile</a></li>
             <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link">Admin</a></li>
 			{% if user.is_authenticated %}
 			<li class="nav-item"><a href="{% url 'logout' %}?next={{ request.path }}" class="nav-link">Logout</a></li>

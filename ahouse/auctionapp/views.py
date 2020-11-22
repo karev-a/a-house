@@ -28,6 +28,17 @@ class SignupPage(CreateView):
     form_class = SignupForm
     success_url = reverse_lazy('main_page')
 
+class ProfilePageView(LoginRequiredMixin, ListView):
+    model = Profile
+    template_name = 'profile_page.html'
+    context_object_name = 'profile'
+    success_url = reverse_lazy('main_page')
+
+    def check_user(self):
+        current_user = super(ProfilePageView, self).get_object()
+        if current_user.user != self.request.user:
+            raise PermissionDenied()
+        return current_user
 
 class ProfileDetailsView(LoginRequiredMixin, DetailView):
     model = Profile
