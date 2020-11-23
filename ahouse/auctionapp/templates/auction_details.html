@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>User: {{auction.user_id}}</p>
+<p>Title: {{auction.title}}</p>
+<p>Description: {{auction.description}}</p>
+<p>Image: {{auction.image}}</p>
+<p>Category: {{category.name}}</p>
+<p>Min bid: {{auction.min_bid}}</p>
+<p>Max bid: {{auction.max_bid}}</p>
+<p>Auction start: {{auction.auction_start}}</p>
+<p>Auction end: {{auction.auction_end}}</p>
+<p>View count: {{auction.views_count}}</p>
+
+
+<hr>
+
+
+
+
+
+
+<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
+
+
+{% endblock %}

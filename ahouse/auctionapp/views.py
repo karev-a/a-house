@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
 from .models import Profile, User, Auction
 from .forms import SignupForm, AuctionCreateForm
 from django.urls import reverse_lazy
@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from django import forms
+from django.utils import timezone
 
 
 # Create your views here.
@@ -68,6 +69,24 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class AuctionCreateView(CreateView):
+    model = Auction
     form_class = AuctionCreateForm
     template_name = 'auction_create.html'
     success_url = reverse_lazy('main_page')
+
+    def form_valid(self, form):
+        form.instance.user_id = self.kwargs.get('pk')
+        return super().form_valid(form)
+
+
+class AuctionDetailsView(DetailView):
+    model = Auction
+    template_name = 'auction_details.html'
+    context_object_name = 'auction'
+    success_url = reverse_lazy('main_page')
+
+    def get_object(self):
+        view_count = super().get_object()
+        view_count.views_count += 1
+        view_count.save()
+        return view_count
