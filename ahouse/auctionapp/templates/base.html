@@ -37,11 +37,30 @@
 	</div>
 </nav>
 
+
+<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #bebebe">
+
+	<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+  	<div class="collapse navbar-collapse" id="navbarMenu2">
+  	    <ul class="navbar-nav d-flex align-items-end">
+		{% for category in categories %}
+		<li class="nav-item nav-link">{{ category.name }}</li>
+		{% endfor %}
+		</ul>
+	</div>
+</nav>
+
+
+
+
 <div class="container-fluid" style="display:inline-block; text-align: center;">
     <div class="row content">
         <div class="col-sm-12">
             <h4><small>{{page_title}}</small></h4>
             {% block content %}{% endblock %}
+
         </div>
     </div>
 </div>

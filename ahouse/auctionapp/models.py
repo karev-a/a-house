@@ -14,7 +14,7 @@ class Category(models.Model):
     logo = models.ImageField(upload_to='images/logos', blank=True)
 
     def __str__(self):
-        return "Category: " + self.name
+        return self.name
 
 
 class Profile(models.Model):
@@ -37,6 +37,10 @@ class Profile(models.Model):
         if created:
             Profile.objects.create(user=instance)
         instance.profile.save()
+
+    def __str__(self):
+        return self.user.username
+
 
 
 class Auction(models.Model):

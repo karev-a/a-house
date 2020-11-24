@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
-from .models import Profile, User, Auction
+from .models import Profile, User, Auction, Category
 from .forms import SignupForm, AuctionCreateForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -23,11 +23,15 @@ class MainPage(ListView):
         context["page_title"] = "Main page"
         return context
 
+    def get_queryset(self):
+        return Auction.objects.filter().order_by('views_count')
+
 
 class SignupPage(CreateView):
     template_name = 'signup_page.html'
     form_class = SignupForm
     success_url = reverse_lazy('main_page')
+
 
 class ProfilePageView(LoginRequiredMixin, ListView):
     model = Profile
@@ -40,6 +44,7 @@ class ProfilePageView(LoginRequiredMixin, ListView):
         if current_user.user != self.request.user:
             raise PermissionDenied()
         return current_user
+
 
 class ProfileDetailsView(LoginRequiredMixin, DetailView):
     model = Profile
@@ -68,15 +73,16 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return current_user
 
 
-class AuctionCreateView(CreateView):
-    model = Auction
+class AuctionCreateView(LoginRequiredMixin, CreateView):
     form_class = AuctionCreateForm
     template_name = 'auction_create.html'
     success_url = reverse_lazy('main_page')
 
     def form_valid(self, form):
-        form.instance.user_id = self.kwargs.get('pk')
-        return super().form_valid(form)
+        instance = form.save(commit=False)
+        instance.user = self.request.user.profile
+        instance.save()
+        return super(AuctionCreateView, self).form_valid(form)
 
 
 class AuctionDetailsView(DetailView):
