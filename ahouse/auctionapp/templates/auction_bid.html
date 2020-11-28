@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<p>Min bid: {{auction_details.min_bid}}</p>
+<p>Current bid: {{auction_details.final_bid}}</p>
+
+
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">
+         Bid
+        </button>
+</form>
+
+<hr>
+
+
+
+
+
+
+<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
+
+
+{% endblock %}
