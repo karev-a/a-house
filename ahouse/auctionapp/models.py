@@ -55,18 +55,24 @@ class Auction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, null=True, blank=True)
     min_bid = models.FloatField()
     max_bid = models.FloatField()
-    final_bid = models.FloatField(null=True)
+    final_bid = models.FloatField()
     promoted = models.CharField(max_length=25, choices=PROMOTION)
     auction_start = models.DateTimeField(auto_now_add=True, editable=False)
     auction_end = models.DateTimeField()
     views_count = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return self.title
+
 
 class Bid(models.Model):
-    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     bid_time = models.DateTimeField()
     bid = models.FloatField()
+
+    def __str__(self):
+        return f"{self.auction} - {self.user} - {self.bid}"
 
 
 class BuyNow(models.Model):

@@ -16,10 +16,9 @@
                     {% endif %}
                 <div class="card-body">
                 <h4 class="card-title">{{auction.title}}</h4>
-                <p class="card-text">{{auction.description}}</p>
                 </div>
                 <div class="card-footer">
-                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">Bid now!</a>
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
                 </div>
                 </div>
         </div>

@@ -21,7 +21,7 @@
 		<span class="navbar-toggler-icon"></span>
 	</button>
   	<div class="collapse navbar-collapse" id="navbarMenu">
-  	    <ul class="navbar-nav d-flex align-items-end">
+  	    <ul class="navbar-nav mx-auto d-flex align-items-end">
 			<li class="nav-item"><a href="{% url 'auction_create' %}" class="nav-link">Auction</a></li>
             <li class="nav-item"><a href="{% url 'signup_page' %}" class="nav-link">SignUp</a></li>
 			<li class="nav-item"><a href="{% url 'profile_page' %}" class="nav-link">Profile</a></li>
@@ -38,13 +38,12 @@
 </nav>
 
 
-<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #bebebe">
-
-	<button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #bebebe;">
+	<button class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#navbarMenu2">
 		<span class="navbar-toggler-icon"></span>
 	</button>
   	<div class="collapse navbar-collapse" id="navbarMenu2">
-  	    <ul class="navbar-nav d-flex align-items-end">
+  	    <ul class="navbar-nav mx-auto d-flex align-items-end">
 		{% for category in categories %}
 		<li class="nav-item nav-link">{{ category.name }}</li>
 		{% endfor %}

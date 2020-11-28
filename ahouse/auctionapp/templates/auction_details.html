@@ -8,11 +8,13 @@
 <p>Image: {{auction.image}}</p>
 <p>Category: {{category.name}}</p>
 <p>Min bid: {{auction.min_bid}}</p>
-<p>Max bid: {{auction.max_bid}}</p>
+<p>Current bid: {{auction.final_bid}}</p>
+<p>BuyNow bid: {{auction.max_bid}}</p>
 <p>Auction start: {{auction.auction_start}}</p>
 <p>Auction end: {{auction.auction_end}}</p>
 <p>View count: {{auction.views_count}}</p>
 
+<p><a href="{% url 'auction_bid' auction.id %}">BID</a></p>
 
 <hr>
 

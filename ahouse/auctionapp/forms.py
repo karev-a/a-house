@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Auction
+from .models import Auction, Bid
 from django.utils import timezone
 
 
@@ -35,3 +35,9 @@ class AuctionCreateForm(forms.ModelForm):
         model = Auction
         fields = ('title', 'description', 'image', 'category', 'min_bid', 'max_bid', 'promoted', 'auction_end')
 
+
+class BidForm(forms.ModelForm):
+    bid = forms.FloatField()
+    class Meta:
+        model = Bid
+        fields = ('bid',)
