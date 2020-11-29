@@ -59,6 +59,7 @@ class Auction(models.Model):
     promoted = models.CharField(max_length=25, choices=PROMOTION)
     auction_start = models.DateTimeField(auto_now_add=True, editable=False)
     auction_end = models.DateTimeField()
+    auction_active = models.BooleanField(default=True)
     views_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -76,10 +77,13 @@ class Bid(models.Model):
 
 
 class BuyNow(models.Model):
-    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     bid_time = models.DateTimeField()
     bid = models.FloatField()
+
+    def __str__(self):
+        return f"{self.auction} - {self.user} - {self.bid}"
 
 
 class AuctionOverview(models.Model):

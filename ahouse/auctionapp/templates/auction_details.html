@@ -12,10 +12,16 @@
 <p>BuyNow bid: {{auction.max_bid}}</p>
 <p>Auction start: {{auction.auction_start}}</p>
 <p>Auction end: {{auction.auction_end}}</p>
+<p>Auction active: {{auction.auction_active}}</p>
 <p>View count: {{auction.views_count}}</p>
 
-<p><a href="{% url 'auction_bid' auction.id %}">BID</a></p>
 
+{% if auction_details.auction_active %}
+<a href="{% url 'auction_bid' auction.id %}" class="btn btn-primary">Bid</a>
+<a href="{% url 'auction_buynow' auction.id %}" class="btn btn-primary">BuyNow</a>
+{% else %}
+<p>This Auction is OVER!</p>
+{% endif %}
 <hr>
 
 

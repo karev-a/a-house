@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Auction, Bid
+from .models import Auction, Bid, BuyNow
 from django.utils import timezone
 
 
@@ -41,3 +41,10 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = ('bid',)
+
+class BuyNowForm(forms.ModelForm):
+
+    class Meta:
+        model = BuyNow
+        fields = ()
+        # exclude = ('bid',)

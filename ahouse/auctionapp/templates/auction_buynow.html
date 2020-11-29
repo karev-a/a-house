@@ -3,20 +3,20 @@
 {% block content %}
 
 {% if auction_details.auction_active %}
-<p>Min bid: {{auction_details.min_bid}}</p>
-<p>Current bid: {{auction_details.final_bid}}</p>
+<p>BuyNow bid: {{auction_details.max_bid}}</p>
+
 
 <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
 
-        <button type="submit" class="btn btn-primary">
-         Bid
-        </button>
+        <button type="submit" class="btn btn-primary">BuyNow</button>
 </form>
 {% else %}
 <p>This Auction is OVER!</p>
 {% endif %}
+
+
 <hr>
 
 

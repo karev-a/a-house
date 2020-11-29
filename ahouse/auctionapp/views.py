@@ -1,15 +1,11 @@
-from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
 from .models import Profile, User, Auction, Category, AuctionOverview, Bid
-from .forms import SignupForm, AuctionCreateForm, BidForm
+from .forms import SignupForm, AuctionCreateForm, BidForm, BuyNowForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
-from django import forms
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
-
 
 # Create your views here.
 
@@ -20,7 +16,7 @@ class MainPage(ListView):
     context_object_name = 'auctions'
 
     def get_queryset(self):
-        return Auction.objects.filter().order_by('views_count')
+        return Auction.objects.filter().order_by('-views_count')
 
 
 class SignupPage(CreateView):
@@ -93,6 +89,11 @@ class AuctionDetailsView(DetailView):
         view_count.save()
         return view_count
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['auction_details'] = Auction.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
 
 class AuctionBidView(LoginRequiredMixin, CreateView):
     form_class = BidForm
@@ -105,7 +106,6 @@ class AuctionBidView(LoginRequiredMixin, CreateView):
         context['auction_details'] = Auction.objects.get(pk=self.kwargs.get('pk'))
         return context
 
-
     def form_valid(self, form):
         bid = form.save(commit=False)
         bid.user = self.request.user.profile
@@ -116,11 +116,41 @@ class AuctionBidView(LoginRequiredMixin, CreateView):
         if bid.auction.min_bid > bid.bid:
             return HttpResponse('u bid too low')
         if bid.bid_time > bid.auction.auction_end:
-            return HttpResponse('this auction as expired')
+            return HttpResponse('this auction has expired')
         if bid.auction.final_bid >= bid.bid:
             return HttpResponse('u bid too low')
-        else:
-            bid.auction.final_bid = bid.bid
-            bid.auction.save()
+        bid.auction.final_bid = bid.bid
+        bid.auction.save()
         form.save()
         return super(AuctionBidView, self).form_valid(form)
+
+
+class AuctionBuyNowView(LoginRequiredMixin, CreateView):
+    form_class = BuyNowForm
+    template_name = 'auction_buynow.html'
+    success_url = reverse_lazy('main_page')
+    context_object_name = 'bid'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['auction_details'] = Auction.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
+    def form_valid(self, form):
+        bid = form.save(commit=False)
+        bid.user = self.request.user.profile
+        bid.auction = Auction.objects.get(pk=self.kwargs.get('pk'))
+        bid.bid_time = timezone.datetime.now()
+        bid.bid = bid.auction.max_bid
+        if bid.auction.user == bid.user:
+            return HttpResponse('no buys for your own items!')
+        if bid.auction.auction_active is False:
+            return HttpResponse('this auction is over!')
+        if bid.bid_time > bid.auction.auction_end:
+            return HttpResponse('this auction has expired')
+        bid.auction.final_bid = bid.bid
+        bid.auction.auction_active = False
+        bid.auction.save()
+        form.save()
+        return super(AuctionBuyNowView, self).form_valid(form)
