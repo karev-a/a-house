@@ -7,16 +7,23 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 
+
 # Create your views here.
 
 
 class MainPage(ListView):
-    model = AuctionOverview
+    model = Auction
+    template_name = 'auctions_main.html'
+    context_object_name = 'auctions'
+
+
+class CategoryPage(ListView):
+    model = Auction
     template_name = 'auctions_main.html'
     context_object_name = 'auctions'
 
     def get_queryset(self):
-        return Auction.objects.filter().order_by('-views_count')
+        return Auction.objects.filter(category=self.kwargs.get('pk'))
 
 
 class SignupPage(CreateView):
@@ -130,7 +137,6 @@ class AuctionBuyNowView(LoginRequiredMixin, CreateView):
     template_name = 'auction_buynow.html'
     success_url = reverse_lazy('main_page')
     context_object_name = 'bid'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

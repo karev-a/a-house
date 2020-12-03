@@ -3,29 +3,37 @@
 
 {% load static %}
 
-<div class="container">
-  {% if auctions %}
-    <div class="row text-center">
-      {% for auction in auctions %}
-        <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="card h-100">
-                    {% if auction.image %}
-                    <img class="card-img-top" src="{{ auction.image.url }}"style="">
-                    {% else %}
-                    <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
-                    {% endif %}
+
+
+
+
+{% if auctions %}
+{% for auction in auctions %}
+
+
+    <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card h-100">
+        {% if auction.image %}
+            <img class="card-img-top" src="{{ auction.image.url }}"style="">
+            {% else %}
+            <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+            {% endif %}
                 <div class="card-body">
                 <h4 class="card-title">{{auction.title}}</h4>
                 </div>
                 <div class="card-footer">
+                {% if auction.auction_active %}
                 <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
-                </div>
+                {% else %}
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-warning">Expired Auction</a>
+                {% endif %}
                 </div>
         </div>
-      {% endfor %}
     </div>
-  {% endif %}
-</div>
+
+{% endfor %}
+{% endif %}
+
 
 
 

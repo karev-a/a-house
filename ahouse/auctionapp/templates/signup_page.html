@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-
+<div class="container-fluid" style="display:inline-block; text-align: center;">
+    <div class="row content">
+        <div class="col-sm-12">
 <h3>Sign up</h3>
 <form method="post">
 {% csrf_token %}
 {{ form.as_p }}
 <button type="submit">Submit</button>
 </form>
+<hr>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 
+        </div>
+    </div>
+</div>
 {% endblock %}

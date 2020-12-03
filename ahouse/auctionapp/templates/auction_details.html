@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<div class="container-fluid" style="display:inline-block; text-align: center;">
+    <div class="row content">
+        <div class="col-sm-12">
 <p>User: {{auction.user}}</p>
 <p>Title: {{auction.title}}</p>
 <p>Description: {{auction.description}}</p>
@@ -22,14 +25,14 @@
 {% else %}
 <p>This Auction is OVER!</p>
 {% endif %}
+
 <hr>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 
+        </div>
+    </div>
+</div>
 
-
-
-
-
-<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
 
 
 {% endblock %}

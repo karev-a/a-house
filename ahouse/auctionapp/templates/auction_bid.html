@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="container-fluid" style="display:inline-block; text-align: center;">
+    <div class="row content">
+        <div class="col-sm-12">
 {% if auction_details.auction_active %}
 <p>Min bid: {{auction_details.min_bid}}</p>
 <p>Current bid: {{auction_details.final_bid}}</p>
@@ -17,14 +19,18 @@
 {% else %}
 <p>This Auction is OVER!</p>
 {% endif %}
+
+
+
+
+
+
 <hr>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 
 
-
-
-
-
-<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
-
+        </div>
+    </div>
+</div>
 
 {% endblock %}

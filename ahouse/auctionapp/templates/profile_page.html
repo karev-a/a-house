@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr>
+<div class="container-fluid" style="display:inline-block; text-align: center;">
+    <div class="row content">
+        <div class="col-sm-12">
+
 
 <p>Click <a href="{% url 'profile_details' user.id %}">here</a> to view your profile</p>
 
 
 
 
-<p>Click <a href="{% url 'main_page' %}">here</a> to go back</p>
+<hr>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 
 
+        </div>
+    </div>
+</div>
 {% endblock %}

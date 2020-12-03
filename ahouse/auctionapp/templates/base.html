@@ -13,7 +13,7 @@
 
 {% load static %}
 
-<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #7e7e7e">
+<nav class="navbar navbar-expand-sm fixed-top navbar-light" style="background-color: #7e7e7e;">
   	<a class="navbar-brand" href="{% url 'main_page' %}">
     	<img src="{% static 'auction/akbay3.jpg' %}" width="50%" height="50%">
 	</a>
@@ -22,7 +22,7 @@
 	</button>
   	<div class="collapse navbar-collapse" id="navbarMenu">
   	    <ul class="navbar-nav mx-auto d-flex align-items-end">
-			<li class="nav-item"><a href="{% url 'auction_create' %}" class="nav-link">Auction</a></li>
+			<li class="nav-item"><a href="{% url 'auction_create' %}" class="nav-link">Create Auction</a></li>
             <li class="nav-item"><a href="{% url 'signup_page' %}" class="nav-link">SignUp</a></li>
 			<li class="nav-item"><a href="{% url 'profile_page' %}" class="nav-link">Profile</a></li>
             <li class="nav-item"><a href="{% url 'admin:index' %}" class="nav-link">Admin</a></li>
@@ -38,14 +38,16 @@
 </nav>
 
 
-<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #bebebe;">
+
+<nav class="navbar navbar-expand-sm sticky-top navbar-light" style="background-color: #bebebe; top: 56px; ">
 	<button class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#navbarMenu2">
 		<span class="navbar-toggler-icon"></span>
 	</button>
   	<div class="collapse navbar-collapse" id="navbarMenu2">
   	    <ul class="navbar-nav mx-auto d-flex align-items-end">
+        <li class="nav-item"><a href="{% url 'main_page' %}" class="nav-link">All categories</a></li>
 		{% for category in categories %}
-		<li class="nav-item nav-link">{{ category.name }}</li>
+		<li class="nav-item"><a href="{% url 'category_page' category.id %}" class="nav-link">{{category.name}}</a></li>
 		{% endfor %}
 		</ul>
 	</div>
@@ -54,16 +56,16 @@
 
 
 
-<div class="container-fluid" style="display:inline-block; text-align: center;">
-    <div class="row content">
-        <div class="col-sm-12">
-            <h4><small>{{page_title}}</small></h4>
+
+
+
+<div class="container" style="margin-top:56px;">
+    <div class="row text-center">
+
             {% block content %}{% endblock %}
 
-        </div>
     </div>
 </div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
