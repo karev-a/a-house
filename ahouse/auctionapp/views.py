@@ -15,15 +15,40 @@ class MainPage(ListView):
     model = Auction
     template_name = 'auctions_main.html'
     context_object_name = 'auctions'
+    ordering = 'main_page'
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', 'auction_start')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['auction_details'] = self.get_ordering()
+        return context
+
+
+class CategoryPageDummy(ListView):
+    model = Auction
+    template_name = 'category_main.html'
+    context_object_name = 'auctions'
+    success_url = reverse_lazy('category_page')
 
 
 class CategoryPage(ListView):
     model = Auction
-    template_name = 'auctions_main.html'
+    template_name = 'category_main.html'
     context_object_name = 'auctions'
+    ordering = 'category_page'
 
     def get_queryset(self):
         return Auction.objects.filter(category=self.kwargs.get('pk'))
+
+    def get_ordering(self):
+        return self.request.GET.get('ordering', 'auction_start')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['auction_details'] = self.get_ordering()
+        return context
 
 
 class SignupPage(CreateView):
