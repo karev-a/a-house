@@ -3,11 +3,30 @@
 
 {% load static %}
 
+<div class="container" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="d-flex justify-content-between">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort by:
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=min_bid&category={{category|default_if_none:'all'}}">Min Bid</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=max_bid&category={{category|default_if_none:'all'}}">Max Bid</a>
+                </div>
+        </div>
+        <form class="form-inline    ">
+                <div class="input-group">
+                    {% if auctions_filter %}
+                    <input class="form-control input-sm" type="text" name="filter_by" value="{{auctions_filter}}">
+                    {% else %}
+                    <input class="form-control input-sm" type="text" placeholder="Search.." name="filter_by">
+                    {% endif %}
+                    <button class="btn btn-outline-success input-sm" type="submit"><i class="fa fa-search"></i></button>
+                </div>
 
-<th><a href="{% url 'main_page' %}?ordering=min_bid">min_bid</a></th>
-<th><a href="{% url 'main_page' %}?ordering=max_bid">max_bid</a></th>
-
-
+        </form>
+    </div>
+</div>
 {% if auctions %}
 {% for auction in auctions %}
 
