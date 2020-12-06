@@ -12,8 +12,8 @@
             </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{% url 'my_auctions' %}">My auctions</a>
-                <a class="dropdown-item" href="{% url 'my_bids' %}">Current bids</a>
-                <a class="dropdown-item" href="#">Purchases</a>
+                <a class="dropdown-item" href="{% url 'my_bids' %}">My bids</a>
+                <a class="dropdown-item" href="{% url 'my_purchases' %}">My purchases</a>
                 </div>
         </div>
     </div>
@@ -73,7 +73,7 @@
             <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">Auction status:</h5>
             </div>
-            {% if auction_details.auction_active %}
+            {% if auction.auction_active %}
             <p class="mb-1">Active</p>
             {% else %}
             <p class="mb-1">Inactive</p>

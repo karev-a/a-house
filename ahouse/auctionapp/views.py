@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
-from .models import Profile, User, Auction, Category, AuctionOverview, Bid
+from .models import Profile, User, Auction, Category, AuctionOverview, Bid, BuyNow
 from .forms import SignupForm, AuctionCreateForm, BidForm, BuyNowForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -206,4 +206,26 @@ class MyBidsView(LoginRequiredMixin, ListView):
         context = super(MyBidsView, self).get_context_data()
         context['queryset'] = self.get_queryset()
         context['bid'] = Bid.objects.all()
+        return context
+
+class MyBuyOutsView(LoginRequiredMixin, ListView):
+    model = BuyNow
+    template_name = 'my_purchases.html'
+    context_object_name = 'bid'
+    success_url = reverse_lazy('main_page')
+
+    def check_user(self):
+        current_user = super(MyBuyOutsView, self).get_object()
+        if current_user.user != self.request.user:
+            raise PermissionDenied()
+        return current_user
+
+    def get_queryset(self):
+        queryset = BuyNow.objects.filter(user=self.request.user.profile)
+        return queryset
+
+    def get_context_data(self):
+        context = super(MyBuyOutsView, self).get_context_data()
+        context['queryset'] = self.get_queryset()
+        context['bid'] = BuyNow.objects.all()
         return context
