@@ -3,9 +3,14 @@ from .models import Profile, User, Auction, Category, AuctionOverview, Bid
 from .forms import SignupForm, AuctionCreateForm, BidForm, BuyNowForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, request
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
+<<<<<<< Updated upstream
+=======
+from django.db.models import Q
+from  django.shortcuts import get_object_or_404
+>>>>>>> Stashed changes
 
 
 # Create your views here.
@@ -21,6 +26,7 @@ class MainPage(ListView):
         return self.request.GET.get('ordering', 'auction_start')
 
     def get_context_data(self, **kwargs):
+<<<<<<< Updated upstream
         context = super().get_context_data()
         context['auction_details'] = self.get_ordering()
         return context
@@ -49,6 +55,26 @@ class CategoryPage(ListView):
         context = super().get_context_data()
         context['auction_details'] = self.get_ordering()
         return context
+=======
+        context = super(MainPage, self).get_context_data(**kwargs)
+        context['category'] = self.request.GET.get('category')
+        context['orderby'] = self.request.GET.get('ordering', 'auction_start')
+        context['auctions_filter'] = self.request.GET.get('auctions_filter')
+        return context
+
+
+# class CategoryPageDummy(ListView):
+#     model = Auction
+#     template_name = 'category_main.html'
+#     context_object_name = 'auctions'
+#     success_url = reverse_lazy('category_page')
+#
+#
+# class CategoryPage(ListView):
+#     model = Auction
+#     template_name = 'category_main.html'
+#     context_object_name = 'auctions'
+>>>>>>> Stashed changes
 
 
 class SignupPage(CreateView):
@@ -57,9 +83,9 @@ class SignupPage(CreateView):
     success_url = reverse_lazy('main_page')
 
 
-class ProfilePageView(LoginRequiredMixin, ListView):
+class ProfilePageView(LoginRequiredMixin, DetailView):
     model = Profile
-    template_name = 'profile_page.html'
+    template_name = 'profile_details.html'
     context_object_name = 'profile'
     success_url = reverse_lazy('main_page')
 
@@ -69,18 +95,23 @@ class ProfilePageView(LoginRequiredMixin, ListView):
             raise PermissionDenied()
         return current_user
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['profile_details'] = Profile.objects.get(pk=self.kwargs.get('pk'))
+        return context
 
-class ProfileDetailsView(LoginRequiredMixin, DetailView):
-    model = Profile
-    template_name = 'profile_details.html'
-    context_object_name = 'profile'
-    success_url = reverse_lazy('main_page')
+# class ProfileDetailsView(LoginRequiredMixin, DetailView):
+#     model = Profile
+#     template_name = 'profile_details.html'
+#     context_object_name = 'profile'
+#     success_url = reverse_lazy('main_page')
+#
+#     def check_user(self):
+#         current_user = super(ProfileDetailsView, self).get_object()
+#         if current_user.user != self.request.user:
+#             raise PermissionDenied()
+#         return current_user
 
-    def check_user(self):
-        current_user = super(ProfileDetailsView, self).get_object()
-        if current_user.user != self.request.user:
-            raise PermissionDenied()
-        return current_user
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -95,7 +126,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         if current_user.user != self.request.user:
             raise PermissionDenied()
         return current_user
-
 
 class AuctionCreateView(LoginRequiredMixin, CreateView):
     form_class = AuctionCreateForm
