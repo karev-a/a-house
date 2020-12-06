@@ -27,6 +27,14 @@ What you will need to run it:
 
 > venv (optional)
 
+NOTE: update settings.py to reflect your MySQL DB settings or create them likewise
+
+Once the above are done:
+> python manage.py makemigrations
+> python manage.py migrate
+and lastly
+> python manage.py runserver
+
 # Final word
 This project is not complete, yet functional to the extent of above-mentioned features. What was planned, but not finished:
 * Refreshing auctions to reflect their status (active vs inactive)
