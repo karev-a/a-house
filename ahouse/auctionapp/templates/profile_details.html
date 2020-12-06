@@ -1,25 +1,83 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container-fluid" style="display:inline-block; text-align: center;">
-    <div class="row content">
-        <div class="col-sm-12">
-<p>Name: {{user.username}}</p>
-<p>Balance: {{profile.balance}}</p>
 
-<p>Click <a href="{% url 'profile_update' user.id %}">here</a> to update this profile</p>
+{% load static %}
 
-
-
-
-
-
-
-<hr>
-<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
-
+<div class="container" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="d-flex justify-content-end">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My stuff:
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">My auctions</a>
+                <a class="dropdown-item" href="#">Current bids</a>
+                <a class="dropdown-item" href="#">Purchases</a>
+                </div>
         </div>
     </div>
+</div>
+
+
+
+
+
+
+
+<div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card">
+            {% if profile.avatar %}
+            <img class="card-img-top" src="{{ profile.avatar.url }}"style="">
+            {% else %}
+            <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title">{{user.username}}</h4>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'profile_update' user.id %}" class="btn btn-primary">Update Profile</a>
+            </div>
+        </div>
+</div>
+<div class="col-lg-9 col-md-8 col-sm-6">
+    <div class="list-group">
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Full name</h5>
+            </div>
+            <p class="mb-1">{{user.first_name}} {{user.last_name}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Email address</h5>
+            </div>
+            <p class="mb-1">{{user.email}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Phone number</h5>
+            </div>
+            <p class="mb-1">{{profile.phone_number}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Physical address</h5>
+            </div>
+            <p class="mb-1">{{profile.address}}, {{profile.town}}, {{profile.post_code}}, {{profile.country}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Date joined:</h5>
+            </div>
+            <p class="mb-1">{{user.date_joined}}</p>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Last login:</h5>
+            </div>
+            <p class="mb-1">{{user.last_login}}</p>
+        </li>
+    </div>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 </div>
 
 {% endblock %}

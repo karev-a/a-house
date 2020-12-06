@@ -55,7 +55,7 @@ class Auction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, null=True, blank=True)
     min_bid = models.FloatField()
     max_bid = models.FloatField()
-    final_bid = models.FloatField()
+    final_bid = models.FloatField(default=0)
     promoted = models.CharField(max_length=25, choices=PROMOTION)
     auction_start = models.DateTimeField(auto_now_add=True, editable=False)
     auction_end = models.DateTimeField()

@@ -1,19 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<div class="container-fluid" style="display:inline-block; text-align: center;">
-    <div class="row content">
-        <div class="col-sm-12">
-<form action="" method="post" enctype="multipart/form-data">
+
+
+<div class="col-12">
+    <div class="list-group">
+        <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-<input type="submit" value="Update">
+{%for field in form%}
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{field.name}}</h5>
+            </div>
+            <p class="mb-1">{{field}}</p>
+        </li>
 
-</form>
-<hr>
-<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
-
-        </div>
+            {%endfor%}
+            <input type="submit" value="Update">
+        </form>
     </div>
+    <a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 </div>
+
 {% endblock %}

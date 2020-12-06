@@ -10,11 +10,14 @@
             Sort by:
             </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=min_bid&category={{category|default_if_none:'all'}}">Min Bid</a>
-                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=max_bid&category={{category|default_if_none:'all'}}">Max Bid</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=-auction_start&category={{category|default_if_none:'all'}}">Newest first</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=min_bid&category={{category|default_if_none:'all'}}">Min Bid Ascending</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=-min_bid&category={{category|default_if_none:'all'}}">Min Bid Descending</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=max_bid&category={{category|default_if_none:'all'}}">BuyNow Price Ascending</a>
+                <a class="dropdown-item" href="{% url 'main_page' %}?ordering=-max_bid&category={{category|default_if_none:'all'}}">BuyNow Price Descending</a>
                 </div>
         </div>
-        <form class="form-inline    ">
+        <form class="form-inline">
                 <div class="input-group">
                     {% if auctions_filter %}
                     <input class="form-control input-sm" type="text" name="filter_by" value="{{auctions_filter}}">
@@ -23,33 +26,31 @@
                     {% endif %}
                     <button class="btn btn-outline-success input-sm" type="submit"><i class="fa fa-search"></i></button>
                 </div>
-
         </form>
     </div>
 </div>
 {% if auctions %}
 {% for auction in auctions %}
 
-
-    <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card h-100">
-        {% if auction.image %}
-            <img class="card-img-top" src="{{ auction.image.url }}"style="">
+<div class="col-lg-3 col-md-4 col-sm-6">
+    <div class="card h-100">
+    {% if auction.image %}
+        <img class="card-img-top" src="{{ auction.image.url }}"style="">
+        {% else %}
+        <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+        {% endif %}
+            <div class="card-body">
+            <h4 class="card-title">{{auction.title}}</h4>
+            </div>
+            <div class="card-footer">
+            {% if auction.auction_active %}
+            <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
             {% else %}
-            <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+            <a href="{% url 'auction_details' auction.id %}" class="btn btn-warning">Expired Auction</a>
             {% endif %}
-                <div class="card-body">
-                <h4 class="card-title">{{auction.title}}</h4>
-                </div>
-                <div class="card-footer">
-                {% if auction.auction_active %}
-                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
-                {% else %}
-                <a href="{% url 'auction_details' auction.id %}" class="btn btn-warning">Expired Auction</a>
-                {% endif %}
-                </div>
-        </div>
+            </div>
     </div>
+</div>
 
 {% endfor %}
 {% endif %}
