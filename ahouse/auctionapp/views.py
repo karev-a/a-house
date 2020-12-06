@@ -1,14 +1,12 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
-from .models import Profile, User, Auction, Category, AuctionOverview, Bid, BuyNow
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from .models import Profile, Auction, Bid, BuyNow
 from .forms import SignupForm, AuctionCreateForm, BidForm, BuyNowForm
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, request
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Q
-from  django.shortcuts import get_object_or_404
-
 
 
 # Create your views here.
@@ -207,6 +205,7 @@ class MyBidsView(LoginRequiredMixin, ListView):
         context['queryset'] = self.get_queryset()
         context['bid'] = Bid.objects.all()
         return context
+
 
 class MyBuyOutsView(LoginRequiredMixin, ListView):
     model = BuyNow
