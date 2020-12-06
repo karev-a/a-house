@@ -1,38 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% load static %}
 
-<div class="container-fluid" style="display:inline-block; text-align: center;">
-    <div class="row content">
-        <div class="col-sm-12">
-<p>User: {{auction.user}}</p>
-<p>Title: {{auction.title}}</p>
-<p>Description: {{auction.description}}</p>
-<p>Image: {{auction.image}}</p>
-<p>Category: {{category.name}}</p>
-<p>Min bid: {{auction.min_bid}}</p>
-<p>Current bid: {{auction.final_bid}}</p>
-<p>BuyNow bid: {{auction.max_bid}}</p>
-<p>Auction start: {{auction.auction_start}}</p>
-<p>Auction end: {{auction.auction_end}}</p>
-<p>Auction active: {{auction.auction_active}}</p>
-<p>View count: {{auction.views_count}}</p>
+<div class="container" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="d-flex justify-content-end">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My stuff:
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'my_auctions' %}">My auctions</a>
+                <a class="dropdown-item" href="{% url 'my_bids' %}">My bids</a>
+                <a class="dropdown-item" href="{% url 'my_purchases' %}">My purchases</a>
+                </div>
+        </div>
+    </div>
+</div>
 
-
-{% if auction_details.auction_active %}
+<div class="col-lg-3 col-md-4 col-sm-6" style="padding-bottom: 5px;">
+        <div class="card">
+            {% if auction.image %}
+            <img class="card-img-top" src="{{ auction.image.url }}"style="">
+            {% else %}
+            <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title">{{auction.title}}</h4>
+            </div>
+            <div class="card-footer">
+                {% if auction_details.auction_active %}
 <a href="{% url 'auction_bid' auction.id %}" class="btn btn-primary">Bid</a>
 <a href="{% url 'auction_buynow' auction.id %}" class="btn btn-primary">BuyNow</a>
 {% else %}
 <p>This Auction is OVER!</p>
 {% endif %}
-
-<hr>
-<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
-
+            </div>
         </div>
-    </div>
 </div>
-
+<div class="col-lg-9 col-md-8 col-sm-6" style="padding-bottom: 5px;">
+    <div class="list-group">
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Category</h5>
+            </div>
+            <p class="mb-1">{{auction.category}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Description</h5>
+            </div>
+            <p class="mb-1">{{auction.description}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Auction Start / Auction End</h5>
+            </div>
+            <p class="mb-1">{{auction.auction_start}} / {{auction.auction_end}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Min Bid / BuyNow Price / Current Bid</h5>
+            </div>
+            <p class="mb-1">{{auction.min_bid}} / {{auction.max_bid}} / {{auction.final_bid}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">View Count</h5>
+            </div>
+            <p class="mb-1">{{auction.views_count}}</p>
+        <li class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Auction status:</h5>
+            </div>
+            {% if auction.auction_active %}
+            <p class="mb-1">Active</p>
+            {% else %}
+            <p class="mb-1">Inactive</p>
+            {% endif %}
+        </li>
+    </div>
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+</div>
 
 
 {% endblock %}

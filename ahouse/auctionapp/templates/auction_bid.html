@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div class="container" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="d-flex justify-content-end">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My stuff:
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'my_auctions' %}">My auctions</a>
+                <a class="dropdown-item" href="{% url 'my_bids' %}">My bids</a>
+                <a class="dropdown-item" href="{% url 'my_purchases' %}">My purchases</a>
+                </div>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid" style="display:inline-block; text-align: center;">
     <div class="row content">
         <div class="col-sm-12">
