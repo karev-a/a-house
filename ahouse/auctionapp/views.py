@@ -72,6 +72,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied()
         return current_user
 
+
 class AuctionCreateView(LoginRequiredMixin, CreateView):
     form_class = AuctionCreateForm
     template_name = 'auction_create.html'
@@ -160,3 +161,49 @@ class AuctionBuyNowView(LoginRequiredMixin, CreateView):
         bid.auction.save()
         form.save()
         return super(AuctionBuyNowView, self).form_valid(form)
+
+
+class MyAuctionsView(LoginRequiredMixin, ListView):
+    model = Auction
+    template_name = 'my_auctions.html'
+    context_object_name = 'auction'
+    success_url = reverse_lazy('main_page')
+
+    def check_user(self):
+        current_user = super(MyAuctionsView, self).get_object()
+        if current_user.user != self.request.user:
+            raise PermissionDenied()
+        return current_user
+
+    def get_queryset(self):
+        queryset = Auction.objects.filter(user=self.request.user.profile)
+        return queryset
+
+    def get_context_data(self):
+        context = super(MyAuctionsView, self).get_context_data()
+        context['queryset'] = self.get_queryset()
+        context['auction'] = Auction.objects.all()
+        return context
+
+
+class MyBidsView(LoginRequiredMixin, ListView):
+    model = Bid
+    template_name = 'my_bids.html'
+    context_object_name = 'bid'
+    success_url = reverse_lazy('main_page')
+
+    def check_user(self):
+        current_user = super(MyBidsView, self).get_object()
+        if current_user.user != self.request.user:
+            raise PermissionDenied()
+        return current_user
+
+    def get_queryset(self):
+        queryset = Bid.objects.filter(user=self.request.user.profile)
+        return queryset
+
+    def get_context_data(self):
+        context = super(MyBidsView, self).get_context_data()
+        context['queryset'] = self.get_queryset()
+        context['bid'] = Bid.objects.all()
+        return context

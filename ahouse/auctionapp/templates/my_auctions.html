@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block content %}
 
-{% load static %}
+{% block content %}
+{%load static%}
+
 
 <div class="container" style="padding-top: 5px; padding-bottom: 5px;">
     <div class="d-flex justify-content-end">
@@ -20,64 +21,69 @@
 
 
 
+{% for auction in queryset %}
 
-
-
-
-<div class="col-lg-3 col-md-4 col-sm-6">
+<div class="col-lg-3 col-md-4 col-sm-6" style="padding-bottom: 5px;">
         <div class="card">
-            {% if profile.avatar %}
-            <img class="card-img-top" src="{{ profile.avatar.url }}"style="">
+            {% if auction.image %}
+            <img class="card-img-top" src="{{ auction.image.url }}"style="">
             {% else %}
             <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
             {% endif %}
             <div class="card-body">
-                <h4 class="card-title">{{user.username}}</h4>
+                <h4 class="card-title">{{auction.title}}</h4>
             </div>
             <div class="card-footer">
-                <a href="{% url 'profile_update' user.id %}" class="btn btn-primary">Update Profile</a>
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
             </div>
         </div>
 </div>
-<div class="col-lg-9 col-md-8 col-sm-6">
+<div class="col-lg-9 col-md-8 col-sm-6" style="padding-bottom: 5px;">
     <div class="list-group">
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Full name</h5>
+            <h5 class="mb-1">Category</h5>
             </div>
-            <p class="mb-1">{{user.first_name}} {{user.last_name}}</p>
+            <p class="mb-1">{{auction.category}}</p>
         </li>
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Email address</h5>
+            <h5 class="mb-1">Description</h5>
             </div>
-            <p class="mb-1">{{user.email}}</p>
+            <p class="mb-1">{{auction.description}}</p>
         </li>
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Phone number</h5>
+            <h5 class="mb-1">Auction Start / Auction End</h5>
             </div>
-            <p class="mb-1">{{profile.phone_number}}</p>
+            <p class="mb-1">{{auction.auction_start}} / {{auction.auction_end}}</p>
         </li>
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Physical address</h5>
+            <h5 class="mb-1">Min Bid / BuyNow Price / Current Bid</h5>
             </div>
-            <p class="mb-1">{{profile.address}}, {{profile.town}}, {{profile.post_code}}, {{profile.country}}</p>
+            <p class="mb-1">{{auction.min_bid}} / {{auction.max_bid}} / {{auction.final_bid}}</p>
         </li>
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Date joined:</h5>
+            <h5 class="mb-1">View Count</h5>
             </div>
-            <p class="mb-1">{{user.date_joined}}</p>
+            <p class="mb-1">{{auction.views_count}}</p>
         <li class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Last login:</h5>
+            <h5 class="mb-1">Auction status:</h5>
             </div>
-            <p class="mb-1">{{user.last_login}}</p>
+            {% if auction_details.auction_active %}
+            <p class="mb-1">Active</p>
+            {% else %}
+            <p class="mb-1">Inactive</p>
+            {% endif %}
         </li>
     </div>
-<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+
 </div>
+
+{%endfor%}
+<a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
 
 {% endblock %}

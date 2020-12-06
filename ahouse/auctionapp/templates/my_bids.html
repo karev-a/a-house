@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+{%load static%}
+
+
+<div class="container" style="padding-top: 5px; padding-bottom: 5px;">
+    <div class="d-flex justify-content-end">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My stuff:
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'my_auctions' %}">My auctions</a>
+                <a class="dropdown-item" href="{% url 'my_bids' %}">Current bids</a>
+                <a class="dropdown-item" href="#">Purchases</a>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="list-group col">
+    <div class="row">
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <div class="d-flex justify-content-between">
+            <h5 class="mb-1">Image</h5>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <div class="d-flex justify-content-between">
+            <h5 class="mb-1">Item</h5>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <div class="d-flex justify-content-between">
+            <h5 class="mb-1">Bid</h5>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <div class="d-flex justify-content-between">
+            <h5 class="mb-1">Bid time</h5>
+            </div>
+        </li>
+    </div>
+    {%for bid in queryset%}
+<div class="row">
+        <li class="list-group-item list-group-item-action col align-items-start">
+            {% if bid.auction.image %}
+            <img class="img-fluid" src="{{ bid.auction.image.url }}" style="width: auto; height: 25px;">
+            {% else %}
+            <img class="img-fluid" src="{% static 'auction/noimage.jpg' %}" style="width: auto; height: 25px;">
+            {% endif %}
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <p class="mb-1">{{bid.auction.title}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <p class="mb-1">{{bid.bid}}</p>
+        </li>
+        <li class="list-group-item list-group-item-action col align-items-start">
+            <p class="mb-1">{{bid.bid_time}}</p>
+        </li>
+</div>
+{%endfor%}
+
+</div>
+
+
+
+
+{% endblock %}
