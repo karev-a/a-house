@@ -3,8 +3,6 @@
 
 {% load static %}
 
-<<<<<<< Updated upstream
-=======
 <div class="container" style="padding-top: 5px; padding-bottom: 5px;">
     <div class="d-flex justify-content-between">
         <div class="dropdown">
@@ -28,12 +26,9 @@
                     {% endif %}
                     <button class="btn btn-outline-success input-sm" type="submit"><i class="fa fa-search"></i></button>
                 </div>
->>>>>>> Stashed changes
-
-<th><a href="{% url 'main_page' %}?ordering=min_bid">min_bid</a></th>
-<th><a href="{% url 'main_page' %}?ordering=max_bid">max_bid</a></th>
-
-
+        </form>
+    </div>
+</div>
 {% if auctions %}
 {% for auction in auctions %}
 

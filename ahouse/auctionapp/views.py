@@ -6,11 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, request
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
-<<<<<<< Updated upstream
-=======
 from django.db.models import Q
 from  django.shortcuts import get_object_or_404
->>>>>>> Stashed changes
+
 
 
 # Create your views here.
@@ -22,59 +20,24 @@ class MainPage(ListView):
     context_object_name = 'auctions'
     ordering = 'main_page'
 
-    def get_ordering(self):
-        return self.request.GET.get('ordering', 'auction_start')
-
-    def get_context_data(self, **kwargs):
-<<<<<<< Updated upstream
-        context = super().get_context_data()
-        context['auction_details'] = self.get_ordering()
-        return context
-
-
-class CategoryPageDummy(ListView):
-    model = Auction
-    template_name = 'category_main.html'
-    context_object_name = 'auctions'
-    success_url = reverse_lazy('category_page')
-
-
-class CategoryPage(ListView):
-    model = Auction
-    template_name = 'category_main.html'
-    context_object_name = 'auctions'
-    ordering = 'category_page'
-
     def get_queryset(self):
-        return Auction.objects.filter(category=self.kwargs.get('pk'))
-
-    def get_ordering(self):
-        return self.request.GET.get('ordering', 'auction_start')
+        auctions_filter = self.request.GET.get('filter_by')
+        category_filter = self.request.GET.get('category')
+        order = self.request.GET.get('ordering', 'auction_start')
+        auctions = Auction.objects.all()
+        if category_filter and category_filter != 'all':
+            auctions = auctions.filter(category__pk=category_filter)
+        auctions = auctions.order_by(order)
+        if auctions_filter:
+            auctions = auctions.filter(Q(title__icontains=auctions_filter) | Q(description__icontains=auctions_filter))
+        return auctions
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['auction_details'] = self.get_ordering()
-        return context
-=======
-        context = super(MainPage, self).get_context_data(**kwargs)
         context['category'] = self.request.GET.get('category')
         context['orderby'] = self.request.GET.get('ordering', 'auction_start')
         context['auctions_filter'] = self.request.GET.get('auctions_filter')
         return context
-
-
-# class CategoryPageDummy(ListView):
-#     model = Auction
-#     template_name = 'category_main.html'
-#     context_object_name = 'auctions'
-#     success_url = reverse_lazy('category_page')
-#
-#
-# class CategoryPage(ListView):
-#     model = Auction
-#     template_name = 'category_main.html'
-#     context_object_name = 'auctions'
->>>>>>> Stashed changes
 
 
 class SignupPage(CreateView):
@@ -94,24 +57,6 @@ class ProfilePageView(LoginRequiredMixin, DetailView):
         if current_user.user != self.request.user:
             raise PermissionDenied()
         return current_user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['profile_details'] = Profile.objects.get(pk=self.kwargs.get('pk'))
-        return context
-
-# class ProfileDetailsView(LoginRequiredMixin, DetailView):
-#     model = Profile
-#     template_name = 'profile_details.html'
-#     context_object_name = 'profile'
-#     success_url = reverse_lazy('main_page')
-#
-#     def check_user(self):
-#         current_user = super(ProfileDetailsView, self).get_object()
-#         if current_user.user != self.request.user:
-#             raise PermissionDenied()
-#         return current_user
-
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
