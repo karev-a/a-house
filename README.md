@@ -7,6 +7,7 @@ Available features:
 * Auction creation, bidding, purchase (aka BuyNow)
 * Auction list view, search, filter by category and sort
 * Ability to view own auctions, bids and purchases
+* Auctions status check (active vs inactive)
 
 
 # Technologies Used
@@ -39,7 +40,6 @@ and lastly
 
 # Final word
 This project is not complete, yet functional to the extent of above-mentioned features. What was planned, but not finished:
-* Refreshing auctions to reflect their status (active vs inactive)
 * Seller and buyer ratings
 * Transaction overview
 * Balance on users account

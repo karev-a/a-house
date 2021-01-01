@@ -8,7 +8,6 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Q
 
-
 # Create your views here.
 
 
