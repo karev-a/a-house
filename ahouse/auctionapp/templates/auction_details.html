@@ -1,7 +1,10 @@
 {% extends "base.html" %}
-
 {% block content %}
 {% load static %}
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="{% static 'auction/multi-countdown.js' %}"></script>
+<script type="text/javascript"></script>
 
 <div class="container" style="padding-top: 5px; padding-bottom: 5px;">
     <div class="d-flex justify-content-end">
@@ -27,9 +30,21 @@
             {% endif %}
             <div class="card-body">
                 <h4 class="card-title">{{auction.title}}</h4>
+                <div class="countdown show" data-Date='{{auction.auction_end}}'>
+                <div class="running">
+                <timer>
+                <span class="days"></span><div class="labels">d</div>
+                <span class="hours"></span><div class="labels">h</div>
+                <span class="minutes"></span><div class="labels">m</div>
+                <span class="seconds"></span><div class="labels">s</div>
+                </timer>
+                </div>
+                </div>
+
             </div>
             <div class="card-footer">
                 {% if auction_details.auction_active %}
+
 <a href="{% url 'auction_bid' auction.id %}" class="btn btn-primary">Bid</a>
 <a href="{% url 'auction_buynow' auction.id %}" class="btn btn-primary">BuyNow</a>
 {% else %}
