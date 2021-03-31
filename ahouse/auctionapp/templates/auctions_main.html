@@ -9,21 +9,24 @@
 
 <div class="container" style="padding-top: 5px; padding-bottom: 5px;">
     <div class="d-flex justify-content-between">
-        <form class="form-inline">
-                <div class="input-group">
+        <form class="form-inline"> 
+              <div class="input-container input-group-sm">
                     {% if auctions_filter %}
                     <input class="form-control input-sm" type="text" name="filter_by" value="{{auctions_filter}}">
                     {% else %}
                     <input class="form-control input-sm" type="text" placeholder="Search.." name="filter_by">
                     {% endif %}
-                    <button class="btn btn-outline-success input-sm" type="submit"><i class="fa fa-search"></i></button>
-                </div>
+              </div>
+              <div class="button-container">
+                <button class="btn btn-outline-dark btn-sm" type="submit"><i class="fa fa-search"></i></button>
+              </div>
+
         </form>
         <div class="dropdown">
-            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-dark dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort by:
             </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{% url 'main_page' %}?ordering=-auction_start&category={{category|default_if_none:'all'}}">Newest first</a>
                 <a class="dropdown-item" href="{% url 'main_page' %}?ordering=min_bid&category={{category|default_if_none:'all'}}">Min Bid Ascending</a>
                 <a class="dropdown-item" href="{% url 'main_page' %}?ordering=-min_bid&category={{category|default_if_none:'all'}}">Min Bid Descending</a>
@@ -37,35 +40,38 @@
 {% if auctions %}
 {% for auction in auctions %}
 
-<div class="col-lg-3 col-md-4 col-sm-6">
-    <div class="card h-100">
+<div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+    <div class="card h-100" style="border: none;">
     {% if auction.image %}
-        <img class="card-img-top" src="{{ auction.image.url }}"style="">
+        <a href="{% url 'auction_details' auction.id %}"><img class="card-img-top border" src="{{ auction.image.url }}"></a>
         {% else %}
-        <img class="card-img-top" src="{% static 'auction/noimage.jpg' %}">
+        <a href="{% url 'auction_details' auction.id %}"><img class="card-img-top border" src="{% static 'auction/noimage.jpg' %}"></a>
         {% endif %}
-            <div class="card-body">
-            <h4 class="card-title">{{auction.title}}</h4>
+            <div class="card-body" style="padding: 0px;">
+            <p class="font-weight-bold" style="margin: 0;">{{auction.title}}</p>
+            <p class="font-weight-normal" style="margin: 0; font-size: 0.9rem;">Min bid: {{auction.min_bid}} | BuyNow: {{auction.max_bid}}</p>
+            <p class="text-muted" style="margin: 0; font-size: 0.9rem;">Location: {{auction.user.country}}</p>
+
+                {% if auction.auction_active %}
                 <div class="countdown show" data-Date='{{auction.auction_end}}'>
                 <div class="running">
                 <timer>
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-dark btn-sm">
                 <span class="days"></span><div class="labels">d</div>
                 <span class="hours"></span><div class="labels">h</div>
                 <span class="minutes"></span><div class="labels">m</div>
                 <span class="seconds"></span><div class="labels">s</div>
+                </a>
                 </timer>
                 </div>
                 </div>
-            </div>
-            <div class="card-footer">
-
-            {% if auction.auction_active %}
-            <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Auction</a>
             {% else %}
-            <a href="{% url 'auction_details' auction.id %}" class="btn btn-warning">Expired Auction</a>
+            <a href="{% url 'auction_details' auction.id %}" class="btn btn-outline-secondary btn-sm">Expired Auction</a>
             {% endif %}
             </div>
+            <hr>
     </div>
+
 </div>
 
 {% endfor %}
